@@ -11,7 +11,7 @@ const pdf = require('html-pdf');
 
 const writeFileAsync = util.promisify(fs.writeFile);
 
-function promptUser() {
+async function promptUser() {
   return inquirer.prompt([
     {
       type: "list",
@@ -27,20 +27,15 @@ function promptUser() {
   ]);
 }
 
-function gitAPICall() {
-  axios
+async function gitAPICall(answers) {
+  const response = axios
   .get(`https://api.github.com/users/${answers.github}`)
-  .then(function(res) {
-    return res;
-  });
-
+return response;
 }
-function gitRepoAPICall() {
-  axios
+async function gitRepoAPICall(answers) {
+  const response = axios
   .get(`https://api.github.com/users/${answers.github}/repos`)
-  .then(function(res) {
-    return res;
-  });
+  return response;
 
 }
 function findStars(gitRepos) {
@@ -64,20 +59,20 @@ function generateHTML(answers, gitInfo, gitRepos, stars) {
 <body style="background-color: ${answers.color}">
   <div class="jumbotron jumbotron-fluid" style="background-color: ${answers.color}">
     <div class="container" style="background-color: ${answers.color}">
-      <img src= ${gitInfo.avatar_url}>
-      <h1 class="display-4">Hi! My name is ${gitInfo.name}</h1>
-      <p class="lead">I work at ${gitInfo.company}.</p>
-      <p>Location: ${gitInfo.location}     Github: ${gitInfo.html_url}     Blog:     ${gitInfo.blog}</p>
+      <img src= ${gitInfo.data.avatar_url}>
+      <h1 class="display-4">Hi! My name is ${gitInfo.data.name}</h1>
+      <p class="lead">I work at ${gitInfo.data.company}.</p>
+      <p><a href="https://www.google.com/maps/search/?api=1&query=${gitInfo.data.location}">Located in ${gitInfo.data.location}</a>     <a href="${gitInfo.data.html_url}">Github</a>     <a href=${gitInfo.data.blog}>Blog:</a>     </p>
     </div>
   </div>
   <div style="background-color: ${answers.color}">
-    <h1>${gitInfo.bio}</h1>
+    <h1>${gitInfo.data.bio}</h1>
     <div class="row">
       <div class="col-md-6" style="background-color: ${answers.color}">
-      Public Repositories: <br>${gitRepos.length}
+      Public Repositories: <br>${gitInfo.data.public_repos}
       </div>
       <div class="col-md-6" style="background-color: ${answers.color}">
-      Followers: <br>${gitInfo.followers}
+      Followers: <br>${gitInfo.data.followers}
       </div>
     </div>
     <div class="row">
@@ -85,7 +80,7 @@ function generateHTML(answers, gitInfo, gitRepos, stars) {
       Github Stars: <br>${stars}
       </div>
       <div class="col-md-6" style="background-color: ${answers.color}">
-      Following: <br>${gitInfo.following}
+      Following: <br>${gitInfo.data.following}
       </div>
     </div>
   </div>
@@ -98,8 +93,8 @@ async function init() {
   try {
     const answers = await promptUser();
 
-    const gitInfo = await gitAPICall();
-    const gitRepos = await gitRepoAPICall();
+    const gitInfo = await gitAPICall(answers);
+    const gitRepos = await gitRepoAPICall(answers);
     const stars = findStars(gitRepos);
 
     const html = generateHTML(answers, gitInfo, gitRepos, stars);

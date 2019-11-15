@@ -1,0 +1,27 @@
+{
+  "name": "pdfgenerator",
+  "version": "1.0.0",
+  "description": "Generates PDF from Github API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BenHonken/pdfgenerator.git"
+  },
+  "author": "Ben Honken",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BenHonken/pdfgenerator/issues"
+  },
+  "homepage": "https://github.com/BenHonken/pdfgenerator#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "fs": "0.0.1-security",
+    "html-pdf": "^2.2.0",
+    "inquirer": "^7.0.0",
+    "util": "^0.12.1"
+  },
+  "devDependencies": {}
+}
