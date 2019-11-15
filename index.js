@@ -40,8 +40,8 @@ async function gitRepoAPICall(answers) {
 }
 function findStars(gitRepos) {
   let starCount=0;
-  for(let i=0; i<gitRepos.length; i++){
-    starCount+=gitRepos[i].stargazers_count;
+  for(let i=0; i<gitRepos.data.length; i++){
+    starCount+=gitRepos.data[i].stargazers_count;
   }
   return starCount;
 }
