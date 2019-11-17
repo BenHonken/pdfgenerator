@@ -51,31 +51,47 @@ function generateHTML(answers, gitInfo, stars) {
   <title>Document</title>
 </head>
 <body style="background-color: white">
-  <div class="wrapper" style="max-width: 800px; background-color: white">
+  <div class="wrapper" style="max-width: 815px; background-color: ${answers.color}">
     <div class="jumbotron jumbotron-fluid" style="background-color: white">
       <div class="container" style="background-color: ${answers.color}">
-        <img src= ${gitInfo.data.avatar_url}>
-        <h1 class="display-4">Hi! My name is ${gitInfo.data.name}</h1>
-        <p class="lead">I work at ${gitInfo.data.company}.</p>
-        <p><a href="https://www.google.com/maps/search/?api=1&query=${gitInfo.data.location}">Located in ${gitInfo.data.location}</a>     <a href="${gitInfo.data.html_url}">Github</a>     <a href=${gitInfo.data.blog}>Blog:</a>     </p>
+        <div class="row">
+          <div class="col-3"></div>
+          <img class="col-6" style="margin-left: 28px" src=${gitInfo.data.avatar_url}>
+          <div class="col-3"></div>
+        </div>
+        <h1 class="display-4" style="margin-left: 40px">Hi! My name is ${gitInfo.data.name}!</h1>
+        <p class="lead" style="font-size: 36px; margin-left: 155px">I work at ${gitInfo.data.company}.</p>
+        <p class="row"style="font-size: 24px"><a style="margin-left: 80px" href="https://www.google.com/maps/search/?api=1&query=${gitInfo.data.location}">Located in ${gitInfo.data.location}</a><a style="margin-left: 90px" href="${gitInfo.data.html_url}">Github</a><a style="margin-left: 200px" href=${gitInfo.data.blog}>Blog</a></p>
       </div>
     </div>
-    <div style="background-color: ${answers.color}">
-      <h1>${gitInfo.data.bio}</h1>
-      <div class="row">
-        <div class="col-6" style="background-color: ${answers.color}">
+    <div style="background-color: white">
+      <h1 style="background-color: ${answers.color}; text-align: justify">${gitInfo.data.bio}</h1>
+      <div class="row" style="background-color: white; margin-top: 15px">
+        <div class="col-1" style="background-color: white">
+        </div>
+        <div class="col-4" style="background-color: ${answers.color}; margin-top: 15px">
         Public Repositories: <br>${gitInfo.data.public_repos}
         </div>
-        <div class="col-6" style="background-color: ${answers.color}">
+        <div class="col-2" style="background-color: white">
+        </div>
+        <div class="col-4" style="background-color: ${answers.color}; margin-top: 15px">
         Followers: <br>${gitInfo.data.followers}
         </div>
+        <div class="col-1" style="background-color: white">
+        </div>
       </div>
-      <div class="row">
-        <div class="col-6" style="background-color: ${answers.color}">
+      <div class="row" style="background-color: white; margin-top: 15px">
+        <div class="col-1" style="background-color: white">
+        </div>
+        <div class="col-4" style="background-color: ${answers.color}"; margin-top: 15px>
         Github Stars: <br>${stars}
         </div>
-        <div class="col-6" style="background-color: ${answers.color}">
+        <div class="col-2" style="background-color: white">
+        </div>
+        <div class="col-4" style="background-color: ${answers.color}"; margin-top: 15px>
         Following: <br>${gitInfo.data.following}
+        </div>
+        <div class="col-1" style="background-color: white">
         </div>
       </div>
     </div>
