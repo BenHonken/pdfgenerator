@@ -32,21 +32,15 @@ async function gitAPICall(answers) {
   .get(`https://api.github.com/users/${answers.github}`)
 return response;
 }
-async function gitRepoAPICall(answers) {
+async function gitStarsAPICall(answers) {
   const response = axios
-  .get(`https://api.github.com/users/${answers.github}/repos`)
+  .get(`https://api.github.com/users/${answers.github}/starred?`)
   return response;
 
 }
-function findStars(gitRepos) {
-  let starCount=0;
-  for(let i=0; i<gitRepos.data.length; i++){
-    starCount+=gitRepos.data[i].stargazers_count;
-  }
-  return starCount;
-}
 
-function generateHTML(answers, gitInfo, gitRepos, stars) {
+
+function generateHTML(answers, gitInfo, stars) {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -56,31 +50,33 @@ function generateHTML(answers, gitInfo, gitRepos, stars) {
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <title>Document</title>
 </head>
-<body style="background-color: ${answers.color}">
-  <div class="jumbotron jumbotron-fluid" style="background-color: ${answers.color}">
-    <div class="container" style="background-color: ${answers.color}">
-      <img src= ${gitInfo.data.avatar_url}>
-      <h1 class="display-4">Hi! My name is ${gitInfo.data.name}</h1>
-      <p class="lead">I work at ${gitInfo.data.company}.</p>
-      <p><a href="https://www.google.com/maps/search/?api=1&query=${gitInfo.data.location}">Located in ${gitInfo.data.location}</a>     <a href="${gitInfo.data.html_url}">Github</a>     <a href=${gitInfo.data.blog}>Blog:</a>     </p>
-    </div>
-  </div>
-  <div style="background-color: ${answers.color}">
-    <h1>${gitInfo.data.bio}</h1>
-    <div class="row">
-      <div class="col-md-6" style="background-color: ${answers.color}">
-      Public Repositories: <br>${gitInfo.data.public_repos}
-      </div>
-      <div class="col-md-6" style="background-color: ${answers.color}">
-      Followers: <br>${gitInfo.data.followers}
+<body style="background-color: white">
+  <div class="wrapper" style="max-width: 800px; background-color: white">
+    <div class="jumbotron jumbotron-fluid" style="background-color: white">
+      <div class="container" style="background-color: ${answers.color}">
+        <img src= ${gitInfo.data.avatar_url}>
+        <h1 class="display-4">Hi! My name is ${gitInfo.data.name}</h1>
+        <p class="lead">I work at ${gitInfo.data.company}.</p>
+        <p><a href="https://www.google.com/maps/search/?api=1&query=${gitInfo.data.location}">Located in ${gitInfo.data.location}</a>     <a href="${gitInfo.data.html_url}">Github</a>     <a href=${gitInfo.data.blog}>Blog:</a>     </p>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-6" style="background-color: ${answers.color}">
-      Github Stars: <br>${stars}
+    <div style="background-color: ${answers.color}">
+      <h1>${gitInfo.data.bio}</h1>
+      <div class="row">
+        <div class="col-6" style="background-color: ${answers.color}">
+        Public Repositories: <br>${gitInfo.data.public_repos}
+        </div>
+        <div class="col-6" style="background-color: ${answers.color}">
+        Followers: <br>${gitInfo.data.followers}
+        </div>
       </div>
-      <div class="col-md-6" style="background-color: ${answers.color}">
-      Following: <br>${gitInfo.data.following}
+      <div class="row">
+        <div class="col-6" style="background-color: ${answers.color}">
+        Github Stars: <br>${stars}
+        </div>
+        <div class="col-6" style="background-color: ${answers.color}">
+        Following: <br>${gitInfo.data.following}
+        </div>
       </div>
     </div>
   </div>
@@ -94,10 +90,10 @@ async function init() {
     const answers = await promptUser();
 
     const gitInfo = await gitAPICall(answers);
-    const gitRepos = await gitRepoAPICall(answers);
-    const stars = findStars(gitRepos);
+    const gitStars = await gitStarsAPICall(answers);
+    const stars = gitStars.data.length;
 
-    const html = generateHTML(answers, gitInfo, gitRepos, stars);
+    const html = generateHTML(answers, gitInfo, stars);
 
     await writeFileAsync("index.html", html);
 
